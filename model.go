@@ -5,12 +5,19 @@ import (
 	"time"
 )
 
+//const about size of game
 const (
 	FIRSTLINE      = 0
 	GAMEY          = 11
 	GAMEX          = 50
 	STARTPOSITIONY = 5
 	STARTPOSITIONX = 49 //==GAMEX - 1
+)
+
+//const about time
+const (
+	START_TIME = 500
+	DELTA_TIME = 1
 )
 
 type SellContains int
@@ -39,12 +46,12 @@ const (
 )
 
 type Game struct {
-	time time.Duration
+	time      time.Duration
 	deltaTime time.Duration
-	board  [GAMEY][GAMEX]SellContains
-	status GameStatus
-	carx   int
-	cary   int
+	board     [GAMEY][GAMEX]SellContains
+	status    GameStatus
+	carx      int
+	cary      int
 }
 
 func getNewGame() *Game {
@@ -52,8 +59,8 @@ func getNewGame() *Game {
 	game.board[STARTPOSITIONY][STARTPOSITIONX] = Car
 	game.carx = STARTPOSITIONX
 	game.cary = STARTPOSITIONY
-	game.time = 500*time.Millisecond
-	game.deltaTime = 1000*time.Microsecond
+	game.time = START_TIME * time.Millisecond
+	game.deltaTime = DELTA_TIME * time.Millisecond
 	return game
 }
 
@@ -112,18 +119,18 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 
 //all bocks go from left to right
 func (game *Game) nextStep() {
-for i:=0;i<GAMEY;i++{
-		for j:=GAMEX-2; j>-1;j--{
-			if game.board[i][j] == Block{
-				if game.board[i][j+1] == Car{
+	for i := 0; i < GAMEY; i++ {
+		for j := GAMEX - 2; j > -1; j-- {
+			if game.board[i][j] == Block {
+				if game.board[i][j+1] == Car {
 					game.status = Ended
-				} else{
+				} else {
 					game.board[i][j] = Nothing
 					game.board[i][j+1] = Block
 				}
 			}
 		}
-		if(game.board[i][GAMEX-1]==Block){
+		if game.board[i][GAMEX-1] == Block {
 			game.board[i][GAMEX-1] = Nothing
 		}
 	}
@@ -131,7 +138,7 @@ for i:=0;i<GAMEY;i++{
 
 func (game *Game) timeBlock() {
 	for {
-		row:=rand.Intn(GAMEY)
+		row := rand.Intn(GAMEY)
 		game.nextStep()
 		time.Sleep(game.time)
 		game.time -= game.deltaTime
