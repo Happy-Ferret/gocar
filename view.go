@@ -37,7 +37,7 @@ func printGame(game *Game) {
 func printAboutTextBlock() {
 	correntLine := TEXTBLOCKMARGINY
 	startx := GAMEMARGINX + GAMEX + TEXTBLOCKMARGINX
-	printString("Welcome!", startx, correntLine)
+	printString("n start/pause game", startx, correntLine)
 	correntLine += 2 //one empty line
 	printString("a ←", startx, correntLine)
 	correntLine++

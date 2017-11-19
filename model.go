@@ -138,6 +138,9 @@ func (game *Game) nextStep() {
 
 func (game *Game) timeBlock() {
 	for {
+		if game.status == Paused {
+			continue
+		}
 		row := rand.Intn(GAMEY)
 		game.nextStep()
 		time.Sleep(game.time)
