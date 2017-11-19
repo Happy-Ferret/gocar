@@ -5,12 +5,16 @@ import (
 )
 
 const (
-	CARCOLOR     = termbox.ColorGreen
-	NOTHINGCOLOR = termbox.ColorBlue
-	BLOCKCOLOR   = termbox.ColorRed
+	CARCOLOR            = termbox.ColorGreen
+	NOTHINGCOLOR        = termbox.ColorBlue
+	BLOCKCOLOR          = termbox.ColorRed
+	TEXTCOLOR           = termbox.ColorWhite
+	TEXTBACKGROUNDCOLOR = termbox.ColorBlack
 
-	GAMEMARGINX = 2
-	GAMEMARGINY = 1
+	GAMEMARGINX      = 2
+	GAMEMARGINY      = 1
+	TEXTBLOCKMARGINY = 1
+	TEXTBLOCKMARGINX = 3
 )
 
 func printGame(game *Game) {
@@ -26,5 +30,29 @@ func printGame(game *Game) {
 			}
 		}
 	}
+	printAboutTextBlock()
 	termbox.Flush()
+}
+
+func printAboutTextBlock() {
+	correntLine := TEXTBLOCKMARGINY
+	startx := GAMEMARGINX + GAMEX + TEXTBLOCKMARGINX
+	printString("Welcome!", startx, correntLine)
+	correntLine += 2 //one empty line
+	printString("a ←", startx, correntLine)
+	correntLine++
+	printString("s ↓", startx, correntLine)
+	correntLine++
+	printString("d →", startx, correntLine)
+	correntLine++
+	printString("w ↑", startx, correntLine)
+	correntLine += 2
+	printString("o exit", startx, correntLine)
+}
+
+func printString(line string, startX, startY int) {
+	for _, char := range line {
+		termbox.SetCell(startX, startY, char, TEXTCOLOR, TEXTBACKGROUNDCOLOR)
+		startX++ //go to the next cell
+	}
 }
