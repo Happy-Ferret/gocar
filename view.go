@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/nsf/termbox-go"
 )
 
@@ -46,8 +48,15 @@ func printAboutTextBlock() {
 	printString("d →", startx, correntLine)
 	correntLine++
 	printString("w ↑", startx, correntLine)
-	correntLine += 2
+	correntLine++
 	printString("o exit", startx, correntLine)
+	correntLine += 2
+	if game.status == Paused {
+		printString("Pause", startx, correntLine)
+		correntLine++
+	}
+	stringTime := strings.Join([]string{"Step by", game.time.String()}, " ")
+	printString(stringTime, startx, correntLine)
 }
 
 func printString(line string, startX, startY int) {
