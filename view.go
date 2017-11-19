@@ -8,6 +8,9 @@ const (
 	CARCOLOR     = termbox.ColorGreen
 	NOTHINGCOLOR = termbox.ColorBlue
 	BLOCKCOLOR   = termbox.ColorRed
+
+	GAMEMARGINX = 2
+	GAMEMARGINY = 1
 )
 
 func printGame(game *Game) {
@@ -15,11 +18,11 @@ func printGame(game *Game) {
 	for i := 0; i < GAMEY; i++ {
 		for j := 0; j < GAMEX; j++ {
 			if game.board[i][j] == Car {
-				termbox.SetCell(j, i, 1, CARCOLOR, CARCOLOR)
+				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, CARCOLOR, CARCOLOR)
 			} else if game.board[i][j] == Block {
-				termbox.SetCell(j, i, 1, BLOCKCOLOR, BLOCKCOLOR)
+				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, BLOCKCOLOR, BLOCKCOLOR)
 			} else {
-				termbox.SetCell(j, i, 1, NOTHINGCOLOR, NOTHINGCOLOR)
+				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, NOTHINGCOLOR, NOTHINGCOLOR)
 			}
 		}
 	}
