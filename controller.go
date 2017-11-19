@@ -36,13 +36,13 @@ func main() {
 		case event := <-playerEvent:
 			if event.Type == termbox.EventKey {
 				switch {
-				case event.Ch == 's':
+				case event.Ch == 's' || event.Key == termbox.KeyArrowDown:
 					game.setCarPosition(Down)
-				case event.Ch == 'w':
+				case event.Ch == 'w' || event.Key == termbox.KeyArrowUp:
 					game.setCarPosition(Up)
-				case event.Ch == 'a':
+				case event.Ch == 'a' || event.Key == termbox.KeyArrowLeft:
 					game.setCarPosition(Left)
-				case event.Ch == 'd':
+				case event.Ch == 'd' || event.Key == termbox.KeyArrowRight:
 					game.setCarPosition(Right)
 				case event.Ch == 'o':
 					return
