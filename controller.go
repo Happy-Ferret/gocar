@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/nsf/termbox-go"
-	"time"
 	"math/rand"
+	"time"
+
+	"github.com/nsf/termbox-go"
 )
 
 var (
@@ -16,6 +17,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	termbox.HideCursor()
 	defer termbox.Close()
 
 	playerEvent := make(chan termbox.Event)
