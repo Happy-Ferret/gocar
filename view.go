@@ -68,7 +68,12 @@ func printString(line string, startX, startY int) {
 
 func printGameEnded() {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
-	printString("GAME ENDED!!!", 1, 1)
+	if game.wined {
+		printString("!!!    YOU WIN    !!!", 1, 1)
+	} else {
+		printString("GAME ENDED!!!", 1, 1)
+	}
+
 	printString("Press [esc] to exit", 1, 3)
 	printString("Press [enter] new game", 1, 4)
 	termbox.Flush()

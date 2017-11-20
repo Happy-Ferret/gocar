@@ -16,8 +16,9 @@ const (
 
 //const about time
 const (
-	START_TIME = 500
-	DELTA_TIME = 1
+	START_TIME    = 400
+	DELTA_TIME    = 1
+	STEPTIMETOWIN = 12
 )
 
 type SellContains int
@@ -50,6 +51,7 @@ type Game struct {
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
 	paused    bool
+	wined     bool
 	carx      int
 	cary      int
 }
@@ -62,6 +64,7 @@ func getNewGame() *Game {
 	game.time = START_TIME * time.Millisecond
 	game.deltaTime = DELTA_TIME * time.Millisecond
 	game.paused = false
+	game.wined = false
 	return game
 }
 
@@ -147,6 +150,10 @@ func (game *Game) timeBlock() {
 		time.Sleep(game.time)
 		game.time -= game.deltaTime
 		game.addBlock(row)
+		if game.time < STEPTIMETOWIN*time.Millisecond {
+			game.wined = true
+			game.status = Ended
+		}
 		if game.status == Ended {
 			return
 		}
