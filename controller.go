@@ -68,9 +68,9 @@ func listenGame(game *Game, playerEvent chan termbox.Event) {
 				game.setCarPosition(Left)
 			case event.Ch == 'd' || event.Key == termbox.KeyArrowRight:
 				game.setCarPosition(Right)
-			case event.Ch == 'o':
-				return
 			case event.Ch == 'n':
+				game.status = Ended
+			case event.Ch == 'p':
 				game.paused = !game.paused
 			}
 		}
