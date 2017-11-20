@@ -31,28 +31,48 @@ func main() {
 
 	go game.timeBlock()
 
-	for game.status != Ended {
-		select {
-		case event := <-playerEvent:
-			if event.Type == termbox.EventKey {
-				switch {
-				case event.Ch == 's' || event.Key == termbox.KeyArrowDown:
-					game.setCarPosition(Down)
-				case event.Ch == 'w' || event.Key == termbox.KeyArrowUp:
-					game.setCarPosition(Up)
-				case event.Ch == 'a' || event.Key == termbox.KeyArrowLeft:
-					game.setCarPosition(Left)
-				case event.Ch == 'd' || event.Key == termbox.KeyArrowRight:
-					game.setCarPosition(Right)
-				case event.Ch == 'o':
-					return
-				case event.Ch == 'n':
-					game.paused = !game.paused
+	for {
+		if game.status != Ended {
+			listenGame(game, playerEvent)
+		} else {
+			printGameEnded()
+			select {
+			case event := <-playerEvent:
+				if event.Type == termbox.EventKey {
+					if event.Key == termbox.KeyEsc {
+						return
+					}
+					if event.Key == termbox.KeyEnter {
+						game = getNewGame()
+						go game.timeBlock()
+					}
 				}
 			}
-
-		default:
-			printGame(game)
 		}
+	}
+}
+
+func listenGame(game *Game, playerEvent chan termbox.Event) {
+	select {
+	case event := <-playerEvent:
+		if event.Type == termbox.EventKey {
+			switch {
+			case event.Ch == 's' || event.Key == termbox.KeyArrowDown:
+				game.setCarPosition(Down)
+			case event.Ch == 'w' || event.Key == termbox.KeyArrowUp:
+				game.setCarPosition(Up)
+			case event.Ch == 'a' || event.Key == termbox.KeyArrowLeft:
+				game.setCarPosition(Left)
+			case event.Ch == 'd' || event.Key == termbox.KeyArrowRight:
+				game.setCarPosition(Right)
+			case event.Ch == 'o':
+				return
+			case event.Ch == 'n':
+				game.paused = !game.paused
+			}
+		}
+
+	default:
+		printGame(game)
 	}
 }

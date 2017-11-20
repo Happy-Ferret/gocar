@@ -65,3 +65,11 @@ func printString(line string, startX, startY int) {
 		startX++ //go to the next cell
 	}
 }
+
+func printGameEnded() {
+	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
+	printString("GAME ENDED!!!", 1, 1)
+	printString("Press [esc] to exit", 1, 3)
+	printString("Press [enter] new game", 1, 4)
+	termbox.Flush()
+}
