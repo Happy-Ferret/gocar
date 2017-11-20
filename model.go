@@ -16,9 +16,9 @@ const (
 
 //const about time
 const (
-	START_TIME    = 400
-	DELTA_TIME    = 1
-	STEPTIMETOWIN = 12
+	startTime     = 400
+	deltaTime     = 1
+	stepTimeToWin = 12
 )
 
 type SellContains int
@@ -61,8 +61,8 @@ func getNewGame() *Game {
 	game.board[STARTPOSITIONY][STARTPOSITIONX] = Car
 	game.carx = STARTPOSITIONX
 	game.cary = STARTPOSITIONY
-	game.time = START_TIME * time.Millisecond
-	game.deltaTime = DELTA_TIME * time.Millisecond
+	game.time = startTime * time.Millisecond
+	game.deltaTime = deltaTime * time.Millisecond
 	game.paused = false
 	game.wined = false
 	return game
@@ -150,7 +150,7 @@ func (game *Game) timeBlock() {
 		time.Sleep(game.time)
 		game.time -= game.deltaTime
 		game.addBlock(row)
-		if game.time < STEPTIMETOWIN*time.Millisecond {
+		if game.time < stepTimeToWin*time.Millisecond {
 			game.wined = true
 			game.status = Ended
 		}
