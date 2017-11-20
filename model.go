@@ -32,7 +32,6 @@ type GameStatus int
 
 const (
 	Started GameStatus = iota
-	Paused
 	Ended
 )
 
@@ -50,6 +49,7 @@ type Game struct {
 	deltaTime time.Duration
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
+	paused    bool
 	carx      int
 	cary      int
 }
@@ -61,6 +61,7 @@ func getNewGame() *Game {
 	game.cary = STARTPOSITIONY
 	game.time = START_TIME * time.Millisecond
 	game.deltaTime = DELTA_TIME * time.Millisecond
+	game.paused = false
 	return game
 }
 
@@ -138,7 +139,7 @@ func (game *Game) nextStep() {
 
 func (game *Game) timeBlock() {
 	for {
-		if game.status == Paused {
+		if game.paused == true {
 			continue
 		}
 		row := rand.Intn(GAMEY)

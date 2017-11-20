@@ -51,7 +51,7 @@ func printAboutTextBlock() {
 	correntLine++
 	printString("o exit", startx, correntLine)
 	correntLine += 2
-	if game.status == Paused {
+	if game.paused {
 		printString("Pause", startx, correntLine)
 		correntLine++
 	}

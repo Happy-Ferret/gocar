@@ -47,11 +47,7 @@ func main() {
 				case event.Ch == 'o':
 					return
 				case event.Ch == 'n':
-					if game.status == Paused {
-						game.status = Started
-					} else {
-						game.status = Paused
-					}
+					game.paused = !game.paused
 				}
 			}
 
