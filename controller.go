@@ -46,6 +46,8 @@ func main() {
 					game.setCarPosition(Right)
 				case event.Ch == 'o':
 					return
+				case event.Ch == 'n':
+					game.paused = !game.paused
 				}
 			}
 
