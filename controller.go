@@ -27,9 +27,7 @@ func main() {
 		}
 	}()
 
-	game = getNewGame()
-
-	go game.timeBlock()
+	game = rungame()
 
 	for {
 		if game.status != Ended {
@@ -43,13 +41,18 @@ func main() {
 						return
 					}
 					if event.Key == termbox.KeyEnter {
-						game = getNewGame()
-						go game.timeBlock()
+						game = rungame()
 					}
 				}
 			}
 		}
 	}
+}
+
+func rungame() *Game {
+	game := getNewGame()
+	go game.timeBlock()
+	return game
 }
 
 func listenGame(game *Game, playerEvent chan termbox.Event) {
