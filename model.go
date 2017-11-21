@@ -140,7 +140,7 @@ func (game *Game) nextStep() {
 	}
 }
 
-func (game *Game) timeBlock() {
+func (game *Game) doSteps() {
 	for {
 		if game.paused == true {
 			continue

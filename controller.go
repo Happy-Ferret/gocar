@@ -51,7 +51,7 @@ func main() {
 
 func rungame() *Game {
 	game := getNewGame()
-	go game.timeBlock()
+	go game.doSteps()
 	return game
 }
 
