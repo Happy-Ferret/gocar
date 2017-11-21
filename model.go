@@ -27,6 +27,7 @@ const (
 	Nothing SellContains = iota
 	Car
 	Block
+	Gold
 )
 
 type GameStatus int
