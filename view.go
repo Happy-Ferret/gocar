@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/nsf/termbox-go"
@@ -12,6 +13,7 @@ const (
 	BLOCKCOLOR          = termbox.ColorRed
 	TEXTCOLOR           = termbox.ColorWhite
 	TEXTBACKGROUNDCOLOR = termbox.ColorBlack
+	GOLDCOLOR           = termbox.ColorYellow
 
 	GAMEMARGINX      = 2
 	GAMEMARGINY      = 1
@@ -27,6 +29,8 @@ func printGame(game *Game) {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, CARCOLOR, CARCOLOR)
 			} else if game.board[i][j] == Block {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, BLOCKCOLOR, BLOCKCOLOR)
+			} else if game.board[i][j] == Gold {
+				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, GOLDCOLOR, GOLDCOLOR)
 			} else {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, NOTHINGCOLOR, NOTHINGCOLOR)
 			}
@@ -57,6 +61,10 @@ func printAboutTextBlock() {
 	}
 	stringTime := strings.Join([]string{"Step by", game.time.String()}, " ")
 	printString(stringTime, startx, correntLine)
+	correntLine++
+	stringGold := strings.Join([]string{"Gold taken", strconv.Itoa(game.goldCount)}, " ")
+	printString(stringGold, startx, correntLine)
+
 }
 
 func printString(line string, startX, startY int) {
@@ -68,12 +76,8 @@ func printString(line string, startX, startY int) {
 
 func printGameEnded() {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
-	if game.wined {
-		printString("!!!    YOU WIN    !!!", 1, 1)
-	} else {
-		printString("GAME ENDED!!!", 1, 1)
-	}
-
+	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
+	printString(stringGold, 1, 1)
 	printString("Press [esc] to exit", 1, 3)
 	printString("Press [enter] new game", 1, 4)
 	termbox.Flush()

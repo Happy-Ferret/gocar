@@ -16,9 +16,10 @@ const (
 
 //const about time
 const (
-	startTime     = 400
-	deltaTime     = 1
-	stepTimeToWin = 12
+	startTime         = 400
+	deltaTime         = 1
+	minTime           = 100
+	timeGoldGenerator = 500
 )
 
 type SellContains int
@@ -27,6 +28,7 @@ const (
 	Nothing SellContains = iota
 	Car
 	Block
+	Gold
 )
 
 type GameStatus int
@@ -46,12 +48,12 @@ const (
 )
 
 type Game struct {
+	goldCount int
 	time      time.Duration
 	deltaTime time.Duration
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
 	paused    bool
-	wined     bool
 	carx      int
 	cary      int
 }
@@ -64,7 +66,7 @@ func getNewGame() *Game {
 	game.time = startTime * time.Millisecond
 	game.deltaTime = deltaTime * time.Millisecond
 	game.paused = false
-	game.wined = false
+	game.goldCount = 0
 	return game
 }
 
@@ -85,6 +87,9 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 				game.status = Ended
 				return
 			}
+			if game.board[game.cary][game.carx-1] == Gold {
+				game.goldCount++
+			}
 			game.board[game.cary][game.carx-1] = Car
 			game.carx--
 		}
@@ -94,6 +99,9 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 			if game.board[game.cary][game.carx+1] == Block {
 				game.status = Ended
 				return
+			}
+			if game.board[game.cary][game.carx+1] == Gold {
+				game.goldCount++
 			}
 			game.board[game.cary][game.carx+1] = Car
 			game.carx++
@@ -105,6 +113,9 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 				game.status = Ended
 				return
 			}
+			if game.board[game.cary-1][game.carx] == Gold {
+				game.goldCount++
+			}
 			game.board[game.cary-1][game.carx] = Car
 			game.cary--
 		}
@@ -114,6 +125,9 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 			if game.board[game.cary+1][game.carx] == Block {
 				game.status = Ended
 				return
+			}
+			if game.board[game.cary+1][game.carx] == Gold {
+				game.goldCount++
 			}
 			game.board[game.cary+1][game.carx] = Car
 			game.cary++
@@ -140,22 +154,39 @@ func (game *Game) nextStep() {
 	}
 }
 
+func (game *Game) doNothingInPause() {
+	for game.paused {
+
+	}
+}
+
 func (game *Game) doSteps() {
 	for {
-		if game.paused == true {
-			continue
-		}
+		game.doNothingInPause()
 		row := rand.Intn(GAMEY)
 		game.nextStep()
 		time.Sleep(game.time)
-		game.time -= game.deltaTime
+
 		game.addBlock(row)
-		if game.time < stepTimeToWin*time.Millisecond {
-			game.wined = true
-			game.status = Ended
+		if game.time > minTime*time.Millisecond {
+			game.time -= game.deltaTime
 		}
 		if game.status == Ended {
 			return
 		}
+	}
+}
+
+func (game *Game) goldGenerator() {
+	for game.status != Ended {
+		game.doNothingInPause()
+		time.Sleep(time.Millisecond * timeGoldGenerator)
+		row := rand.Intn(GAMEY)
+		col := rand.Intn(GAMEX)
+
+		if game.board[row][col] == Nothing {
+			game.board[row][col] = Gold
+		}
+
 	}
 }
