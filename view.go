@@ -64,7 +64,9 @@ func printAboutTextBlock() {
 	correntLine++
 	stringGold := strings.Join([]string{"Gold taken", strconv.Itoa(game.goldCount)}, " ")
 	printString(stringGold, startx, correntLine)
-
+	correntLine++
+	stringAllTime := strings.Join([]string{"Game's time", game.allTime.String()}, " ")
+	printString(stringAllTime, startx, correntLine)
 }
 
 func printString(line string, startX, startY int) {
@@ -78,6 +80,8 @@ func printGameEnded() {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
 	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
 	printString(stringGold, 1, 1)
+	stringAllTime := strings.Join([]string{"You played", game.allTime.String()}, " ")
+	printString(stringAllTime, 1, 2)
 	printString("Press [esc] to exit", 1, 3)
 	printString("Press [enter] new game", 1, 4)
 	termbox.Flush()

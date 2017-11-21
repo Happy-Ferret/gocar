@@ -51,6 +51,7 @@ type Game struct {
 	goldCount int
 	time      time.Duration
 	deltaTime time.Duration
+	allTime   time.Duration
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
 	paused    bool
@@ -166,7 +167,7 @@ func (game *Game) doSteps() {
 		row := rand.Intn(GAMEY)
 		game.nextStep()
 		time.Sleep(game.time)
-
+		game.allTime += game.time
 		game.addBlock(row)
 		if game.time > minTime*time.Millisecond {
 			game.time -= game.deltaTime
