@@ -16,9 +16,10 @@ const (
 
 //const about time
 const (
-	startTime     = 400
-	deltaTime     = 1
-	stepTimeToWin = 12
+	startTime         = 400
+	deltaTime         = 1
+	stepTimeToWin     = 12
+	timeGoldGenerator = 500
 )
 
 type SellContains int
@@ -141,11 +142,15 @@ func (game *Game) nextStep() {
 	}
 }
 
+func (game *Game) doNothingInPause() {
+	for game.paused {
+
+	}
+}
+
 func (game *Game) doSteps() {
 	for {
-		if game.paused == true {
-			continue
-		}
+		game.doNothingInPause()
 		row := rand.Intn(GAMEY)
 		game.nextStep()
 		time.Sleep(game.time)
@@ -158,5 +163,19 @@ func (game *Game) doSteps() {
 		if game.status == Ended {
 			return
 		}
+	}
+}
+
+func (game *Game) goldGenerator() {
+	for game.status != Ended {
+		game.doNothingInPause()
+		time.Sleep(time.Millisecond * timeGoldGenerator)
+		row := rand.Intn(GAMEY)
+		col := rand.Intn(GAMEX)
+
+		if game.board[row][col] == Nothing {
+			game.board[row][col] = Gold
+		}
+
 	}
 }
