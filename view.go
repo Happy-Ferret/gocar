@@ -12,6 +12,7 @@ const (
 	BLOCKCOLOR          = termbox.ColorRed
 	TEXTCOLOR           = termbox.ColorWhite
 	TEXTBACKGROUNDCOLOR = termbox.ColorBlack
+	GOLDCOLOR           = termbox.ColorYellow
 
 	GAMEMARGINX      = 2
 	GAMEMARGINY      = 1
@@ -27,6 +28,8 @@ func printGame(game *Game) {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, CARCOLOR, CARCOLOR)
 			} else if game.board[i][j] == Block {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, BLOCKCOLOR, BLOCKCOLOR)
+			} else if game.board[i][j] == Gold {
+				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, GOLDCOLOR, GOLDCOLOR)
 			} else {
 				termbox.SetCell(GAMEMARGINX+j, GAMEMARGINY+i, 1, NOTHINGCOLOR, NOTHINGCOLOR)
 			}
