@@ -3,6 +3,7 @@ package main
 import (
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/nsf/termbox-go"
 )
@@ -67,6 +68,8 @@ func printAboutTextBlock() {
 	correntLine++
 	stringAllTime := strings.Join([]string{"Game's time", game.allTime.String()}, " ")
 	printString(stringAllTime, startx, correntLine)
+	correntLine++
+	printString(totalScore(game), startx, correntLine)
 }
 
 func printString(line string, startX, startY int) {
@@ -77,12 +80,28 @@ func printString(line string, startX, startY int) {
 }
 
 func printGameEnded() {
+	//waiting gorutins with time
+	for i := 1; i < 4; i++ {
+		time.Sleep(100 * time.Millisecond)
+		printString("#", 1, i)
+	}
+
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
 	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
-	printString(stringGold, 1, 1)
+	printString(stringGold, 1, 2)
 	stringAllTime := strings.Join([]string{"You played", game.allTime.String()}, " ")
-	printString(stringAllTime, 1, 2)
-	printString("Press [esc] to exit", 1, 3)
-	printString("Press [enter] new game", 1, 4)
+	printString(stringAllTime, 1, 3)
+	printString(totalScore(game), 1, 7)
+	printString("Press [esc] to exit", 1, 4)
+	printString("Press [enter] new game", 1, 5)
 	termbox.Flush()
+}
+
+func totalScore(game *Game) string {
+	min := int64(game.allTime.Minutes())
+	goldCount := (int64)(game.goldCount)
+	//some f(min, goldCount)
+	score := (int)(min*2 + goldCount)
+	stringScore := strings.Join([]string{"Total score", strconv.Itoa(score)}, " ")
+	return stringScore
 }
