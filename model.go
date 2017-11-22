@@ -16,8 +16,10 @@ const (
 
 //const about time
 const (
-	START_TIME = 500
-	DELTA_TIME = 1
+	startTime         = 400
+	deltaTime         = 1
+	minTime           = 100
+	timeGoldGenerator = 500
 )
 
 type SellContains int
@@ -26,6 +28,7 @@ const (
 	Nothing SellContains = iota
 	Car
 	Block
+	Gold
 )
 
 type GameStatus int
@@ -45,11 +48,12 @@ const (
 )
 
 type Game struct {
+	goldCount int
 	time      time.Duration
 	deltaTime time.Duration
+	allTime   time.Duration
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
-	paused    bool
 	carx      int
 	cary      int
 }
@@ -59,9 +63,8 @@ func getNewGame() *Game {
 	game.board[STARTPOSITIONY][STARTPOSITIONX] = Car
 	game.carx = STARTPOSITIONX
 	game.cary = STARTPOSITIONY
-	game.time = START_TIME * time.Millisecond
-	game.deltaTime = DELTA_TIME * time.Millisecond
-	game.paused = false
+	game.time = startTime * time.Millisecond
+	game.deltaTime = deltaTime * time.Millisecond
 	return game
 }
 
@@ -78,8 +81,7 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 	case Left:
 		if game.carx != 0 {
 			game.board[game.cary][game.carx] = Nothing
-			if game.board[game.cary][game.carx-1] == Block {
-				game.status = Ended
+			if game.carMovie(game.cary, game.carx-1) {
 				return
 			}
 			game.board[game.cary][game.carx-1] = Car
@@ -88,8 +90,7 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 	case Right:
 		if game.carx != GAMEX-1 {
 			game.board[game.cary][game.carx] = Nothing
-			if game.board[game.cary][game.carx+1] == Block {
-				game.status = Ended
+			if game.carMovie(game.cary, game.carx+1) {
 				return
 			}
 			game.board[game.cary][game.carx+1] = Car
@@ -98,8 +99,7 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 	case Up:
 		if game.cary != 0 {
 			game.board[game.cary][game.carx] = Nothing
-			if game.board[game.cary-1][game.carx] == Block {
-				game.status = Ended
+			if game.carMovie(game.cary-1, game.carx) {
 				return
 			}
 			game.board[game.cary-1][game.carx] = Car
@@ -108,14 +108,25 @@ func (game *Game) setCarPosition(setter PositionSetter) {
 	case Down:
 		if game.cary != GAMEY-1 {
 			game.board[game.cary][game.carx] = Nothing
-			if game.board[game.cary+1][game.carx] == Block {
-				game.status = Ended
+			if game.carMovie(game.cary+1, game.carx) {
 				return
 			}
 			game.board[game.cary+1][game.carx] = Car
 			game.cary++
 		}
 	}
+}
+
+//if game ended then true
+func (game *Game) carMovie(i, j int) bool {
+	if game.board[i][j] == Block {
+		game.status = Ended
+		return true
+	}
+	if game.board[i][j] == Gold {
+		game.goldCount++
+	}
+	return false
 }
 
 //all bocks go from left to right
@@ -137,18 +148,39 @@ func (game *Game) nextStep() {
 	}
 }
 
-func (game *Game) timeBlock() {
+func (game *Game) doSteps() {
 	for {
-		if game.paused == true {
-			continue
-		}
 		row := rand.Intn(GAMEY)
 		game.nextStep()
-		time.Sleep(game.time)
-		game.time -= game.deltaTime
-		game.addBlock(row)
 		if game.status == Ended {
 			return
 		}
+		time.Sleep(game.time)
+		if game.status == Ended {
+			return
+		}
+		game.allTime += game.time
+
+		game.addBlock(row)
+		if game.time > minTime*time.Millisecond {
+			game.time -= game.deltaTime
+		}
+		if game.status == Ended {
+			return
+		}
+	}
+}
+
+func (game *Game) goldGenerator() {
+	for game.status != Ended {
+
+		time.Sleep(time.Millisecond * timeGoldGenerator)
+		row := rand.Intn(GAMEY)
+		col := rand.Intn(GAMEX)
+
+		if game.board[row][col] == Nothing {
+			game.board[row][col] = Gold
+		}
+
 	}
 }
