@@ -54,7 +54,6 @@ type Game struct {
 	allTime   time.Duration
 	board     [GAMEY][GAMEX]SellContains
 	status    GameStatus
-	paused    bool
 	carx      int
 	cary      int
 }
@@ -149,15 +148,8 @@ func (game *Game) nextStep() {
 	}
 }
 
-func (game *Game) doNothingInPause() {
-	for game.paused {
-
-	}
-}
-
 func (game *Game) doSteps() {
 	for {
-		game.doNothingInPause()
 		row := rand.Intn(GAMEY)
 		game.nextStep()
 		if game.status == Ended {
@@ -168,6 +160,7 @@ func (game *Game) doSteps() {
 			return
 		}
 		game.allTime += game.time
+
 		game.addBlock(row)
 		if game.time > minTime*time.Millisecond {
 			game.time -= game.deltaTime
@@ -180,7 +173,7 @@ func (game *Game) doSteps() {
 
 func (game *Game) goldGenerator() {
 	for game.status != Ended {
-		game.doNothingInPause()
+
 		time.Sleep(time.Millisecond * timeGoldGenerator)
 		row := rand.Intn(GAMEY)
 		col := rand.Intn(GAMEX)

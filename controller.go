@@ -71,8 +71,6 @@ func listenGame(game *Game, playerEvent chan termbox.Event) {
 				game.setCarPosition(Right)
 			case event.Ch == 'n':
 				game.status = Ended
-			case event.Ch == 'p':
-				game.paused = !game.paused
 			}
 		}
 

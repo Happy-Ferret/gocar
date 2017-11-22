@@ -43,8 +43,6 @@ func printGame(game *Game) {
 func printAboutTextBlock() {
 	correntLine := TEXTBLOCKMARGINY
 	startx := GAMEMARGINX + GAMEX + TEXTBLOCKMARGINX
-	printString("p start/pause game", startx, correntLine)
-	correntLine += 2 //one empty line
 	printString("a ←", startx, correntLine)
 	correntLine++
 	printString("s ↓", startx, correntLine)
@@ -55,10 +53,6 @@ func printAboutTextBlock() {
 	correntLine++
 	printString("n end this game", startx, correntLine)
 	correntLine += 2
-	if game.paused {
-		printString("Pause", startx, correntLine)
-		correntLine++
-	}
 	stringTime := strings.Join([]string{"Step by", game.time.String()}, " ")
 	printString(stringTime, startx, correntLine)
 	correntLine++
