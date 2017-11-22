@@ -166,14 +166,14 @@ func (game *Game) doSteps() {
 		game.doNothingInPause()
 		row := rand.Intn(GAMEY)
 		game.nextStep()
+		if game.status == Ended {
+			return
+		}
 		time.Sleep(game.time)
 		game.allTime += game.time
 		game.addBlock(row)
 		if game.time > minTime*time.Millisecond {
 			game.time -= game.deltaTime
-		}
-		if game.status == Ended {
-			return
 		}
 	}
 }
