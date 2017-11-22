@@ -170,10 +170,16 @@ func (game *Game) doSteps() {
 			return
 		}
 		time.Sleep(game.time)
+		if game.status == Ended {
+			return
+		}
 		game.allTime += game.time
 		game.addBlock(row)
 		if game.time > minTime*time.Millisecond {
 			game.time -= game.deltaTime
+		}
+		if game.status == Ended {
+			return
 		}
 	}
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/nsf/termbox-go"
 )
@@ -80,12 +79,6 @@ func printString(line string, startX, startY int) {
 }
 
 func printGameEnded() {
-	//waiting gorutins with time
-	for i := 1; i < 4; i++ {
-		time.Sleep(100 * time.Millisecond)
-		printString("#", 1, i)
-	}
-
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
 	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
 	printString(stringGold, 1, 2)
