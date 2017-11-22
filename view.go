@@ -74,13 +74,14 @@ func printString(line string, startX, startY int) {
 
 func printGameEnded() {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
+	printString(totalScore(game), 1, 1)
 	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
-	printString(stringGold, 1, 2)
+	printString(stringGold, 1, 3)
 	stringAllTime := strings.Join([]string{"You played", game.allTime.String()}, " ")
-	printString(stringAllTime, 1, 3)
-	printString(totalScore(game), 1, 7)
-	printString("Press [esc] to exit", 1, 4)
-	printString("Press [enter] new game", 1, 5)
+	printString(stringAllTime, 1, 4)
+
+	printString("Press [esc] to exit", 1, 6)
+	printString("Press [enter] new game", 1, 7)
 	termbox.Flush()
 }
 
