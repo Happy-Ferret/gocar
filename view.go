@@ -43,8 +43,6 @@ func printGame(game *Game) {
 func printAboutTextBlock() {
 	correntLine := TEXTBLOCKMARGINY
 	startx := GAMEMARGINX + GAMEX + TEXTBLOCKMARGINX
-	printString("p start/pause game", startx, correntLine)
-	correntLine += 2 //one empty line
 	printString("a ←", startx, correntLine)
 	correntLine++
 	printString("s ↓", startx, correntLine)
@@ -55,16 +53,16 @@ func printAboutTextBlock() {
 	correntLine++
 	printString("n end this game", startx, correntLine)
 	correntLine += 2
-	if game.paused {
-		printString("Pause", startx, correntLine)
-		correntLine++
-	}
 	stringTime := strings.Join([]string{"Step by", game.time.String()}, " ")
 	printString(stringTime, startx, correntLine)
 	correntLine++
 	stringGold := strings.Join([]string{"Gold taken", strconv.Itoa(game.goldCount)}, " ")
 	printString(stringGold, startx, correntLine)
-
+	correntLine++
+	stringAllTime := strings.Join([]string{"Game's time", game.allTime.String()}, " ")
+	printString(stringAllTime, startx, correntLine)
+	correntLine++
+	printString(totalScore(game), startx, correntLine)
 }
 
 func printString(line string, startX, startY int) {
@@ -77,8 +75,20 @@ func printString(line string, startX, startY int) {
 func printGameEnded() {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
 	stringGold := strings.Join([]string{"You have take", strconv.Itoa(game.goldCount), "gold!"}, " ")
-	printString(stringGold, 1, 1)
-	printString("Press [esc] to exit", 1, 3)
-	printString("Press [enter] new game", 1, 4)
+	printString(stringGold, 1, 2)
+	stringAllTime := strings.Join([]string{"You played", game.allTime.String()}, " ")
+	printString(stringAllTime, 1, 3)
+	printString(totalScore(game), 1, 7)
+	printString("Press [esc] to exit", 1, 4)
+	printString("Press [enter] new game", 1, 5)
 	termbox.Flush()
+}
+
+func totalScore(game *Game) string {
+	min := int64(game.allTime.Minutes())
+	goldCount := (int64)(game.goldCount)
+	//some f(min, goldCount)
+	score := (int)(min*2 + goldCount)
+	stringScore := strings.Join([]string{"Total score", strconv.Itoa(score)}, " ")
+	return stringScore
 }
