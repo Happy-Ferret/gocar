@@ -66,8 +66,6 @@ func getNewGame() *Game {
 	game.cary = STARTPOSITIONY
 	game.time = startTime * time.Millisecond
 	game.deltaTime = deltaTime * time.Millisecond
-	game.paused = false
-	game.goldCount = 0
 	return game
 }
 
