@@ -5,42 +5,19 @@ import (
 	"time"
 )
 
-//const about size of game
-const (
-	FIRSTLINE      = 0
-	GAMEY          = 11
-	GAMEX          = 50
-	STARTPOSITIONY = 5
-	STARTPOSITIONX = 49 //==GAMEX - 1
-)
-
-//const about time
-const (
-	startTime         = 400
-	deltaTime         = 1
-	minTime           = 100
-	timeGoldGenerator = 500
-)
-
 type SellContains int
+type GameStatus int
+type PositionSetter int
 
 const (
 	Nothing SellContains = iota
 	Car
 	Block
 	Gold
-)
 
-type GameStatus int
-
-const (
 	Started GameStatus = iota
 	Ended
-)
 
-type PositionSetter int
-
-const (
 	Left PositionSetter = iota
 	Right
 	Up

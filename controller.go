@@ -27,6 +27,8 @@ func main() {
 		}
 	}()
 
+	doConfig()
+
 	game = rungame()
 
 	for {
