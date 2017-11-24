@@ -1,7 +1,13 @@
 package main
 
-import termbox "github.com/nsf/termbox-go"
+import (
+	"encoding/json"
+	"io/ioutil"
 
+	"github.com/nsf/termbox-go"
+)
+
+//int to color
 var int2color = map[int]termbox.Attribute{
 	0: termbox.ColorBlack,
 	1: termbox.ColorBlue,
@@ -60,5 +66,7 @@ type Config struct {
 }
 
 func writeDefultJsonConfig() {
-
+	config := &Config{GAMEMARGINX, GAMEMARGINY, TEXTBLOCKMARGINY, TEXTBLOCKMARGINX, 3, 1, 5, 6, 0, 7}
+	configJson, _ := json.Marshal(config)
+	ioutil.WriteFile("carconfig.json", configJson, 0644)
 }
