@@ -7,20 +7,6 @@ import (
 	"github.com/nsf/termbox-go"
 )
 
-const (
-	CARCOLOR            = termbox.ColorGreen
-	NOTHINGCOLOR        = termbox.ColorBlue
-	BLOCKCOLOR          = termbox.ColorRed
-	TEXTCOLOR           = termbox.ColorWhite
-	TEXTBACKGROUNDCOLOR = termbox.ColorBlack
-	GOLDCOLOR           = termbox.ColorYellow
-
-	GAMEMARGINX      = 2
-	GAMEMARGINY      = 1
-	TEXTBLOCKMARGINY = 1
-	TEXTBLOCKMARGINX = 3
-)
-
 func printGame(game *Game) {
 	termbox.Clear(termbox.ColorBlack, termbox.ColorBlack)
 	for i := 0; i < GAMEY; i++ {
