@@ -6,24 +6,18 @@ import (
 )
 
 type SellContains int
+type GameStatus int
+type PositionSetter int
 
 const (
 	Nothing SellContains = iota
 	Car
 	Block
 	Gold
-)
 
-type GameStatus int
-
-const (
 	Started GameStatus = iota
 	Ended
-)
 
-type PositionSetter int
-
-const (
 	Left PositionSetter = iota
 	Right
 	Up
