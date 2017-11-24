@@ -37,7 +37,7 @@ const (
 )
 
 //color and size
-const (
+var (
 	CARCOLOR            = termbox.ColorGreen
 	NOTHINGCOLOR        = termbox.ColorBlue
 	BLOCKCOLOR          = termbox.ColorRed
@@ -65,8 +65,38 @@ type Config struct {
 	GOLDCOLOR           int
 }
 
-func writeDefultJsonConfig() {
-	config := &Config{GAMEMARGINX, GAMEMARGINY, TEXTBLOCKMARGINY, TEXTBLOCKMARGINX, 3, 1, 5, 6, 0, 7}
+//do it if err!=nil
+func writeDefultJsonConfig(err error) {
+	if err == nil {
+		return
+	}
+	//default values
+	config := &Config{2, 1, 1, 3, 3, 1, 5, 6, 0, 7}
 	configJson, _ := json.Marshal(config)
 	ioutil.WriteFile("carconfig.json", configJson, 0644)
+}
+
+func doConfig() {
+	jsonFile, err := ioutil.ReadFile("carconfig.json")
+	writeDefultJsonConfig(err)
+	var conf Config
+	err = json.Unmarshal(jsonFile, &conf)
+	writeDefultJsonConfig(err)
+	if err == nil {
+		config2var(&conf)
+	}
+}
+
+func config2var(conf *Config) {
+	CARCOLOR = int2color[conf.CARCOLOR]
+	NOTHINGCOLOR = int2color[conf.NOTHINGCOLOR]
+	BLOCKCOLOR = int2color[conf.BLOCKCOLOR]
+	TEXTCOLOR = int2color[conf.TEXTCOLOR]
+	TEXTBACKGROUNDCOLOR = int2color[conf.TEXTBACKGROUNDCOLOR]
+	GOLDCOLOR = int2color[conf.GOLDCOLOR]
+
+	GAMEMARGINX = conf.GAMEMARGINX
+	GAMEMARGINY = conf.GAMEMARGINY
+	TEXTBLOCKMARGINY = conf.TEXTBLOCKMARGINY
+	TEXTBLOCKMARGINX = conf.TEXTBLOCKMARGINX
 }
