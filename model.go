@@ -5,12 +5,12 @@ import (
 	"time"
 )
 
-type SellContains int
+type CellContains int
 type GameStatus int
 type PositionSetter int
 
 const (
-	Nothing SellContains = iota
+	Nothing CellContains = iota
 	Car
 	Block
 	Gold
@@ -29,7 +29,7 @@ type Game struct {
 	time      time.Duration
 	deltaTime time.Duration
 	allTime   time.Duration
-	board     [GAMEY][GAMEX]SellContains
+	board     [GAMEY][GAMEX]CellContains
 	status    GameStatus
 	carx      int
 	cary      int

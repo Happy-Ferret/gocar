@@ -30,6 +30,7 @@ func main() {
 	doConfig()
 
 	game = rungame()
+	go historyWriter()
 
 	for {
 		if game.status != Ended {
@@ -44,6 +45,7 @@ func main() {
 					}
 					if event.Key == termbox.KeyEnter {
 						game = rungame()
+						go historyWriter()
 					}
 				}
 			}

@@ -72,8 +72,8 @@ func writeDefultJsonConfig(err error) {
 	}
 	//default values
 	config := &Config{2, 1, 1, 3, 3, 1, 5, 6, 0, 7}
-	configJson, _ := json.Marshal(config)
-	ioutil.WriteFile("carconfig.json", configJson, 0644)
+	configJSON, _ := json.Marshal(config)
+	ioutil.WriteFile("carconfig.json", configJSON, 0644)
 }
 
 func doConfig() {
