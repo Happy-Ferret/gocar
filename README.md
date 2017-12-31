@@ -1,4 +1,4 @@
-# cargo
+# gocar
 **car game written in golang**
 
 *total_score = 2*minutes+count_of_gold*
